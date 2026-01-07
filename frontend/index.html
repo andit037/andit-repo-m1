@@ -4,6 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RF</title>
+  <style>
+    h1 {
+      color:blue;
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+    #game-area {
+      background-color: aliceblue;
+      border: 4px solid blue;
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+    }
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333;
+      background: #edf7fe;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+    #spin-button{
+      background-color: rgb(33, 156, 33);
+      color: white;
+      font-size: 32px;
+      padding: 16px 32px;
+      margin-bottom: 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    #spin-button{
+      background-color: #229a54;
+      transform: translateY(-4px);
+    }
+    #reset-button{
+      background-color: grey;
+      color: white;
+      font-size: 16px;
+      padding: 8px 16px;
+      margin-bottom: 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #reset-button:hover{
+      background-color: grey;
+      transform: translateY(-4px);
+    }
+    #result-message{
+       font-size: 24px;
+       font-weight: bold;
+       margin-top: 24px;
+    }
+    #stats-display{
+       font-size: 20px;
+       color: grey;
+       margin-top: 24px;
+    }
+  </style>
 </head>
 <body>
   <h1>Roda Kebahagiaan</h1>
