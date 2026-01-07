@@ -37,7 +37,7 @@
       border-radius: 12px;
       cursor: pointer;
     }
-    #spin-button{
+    #spin-button:hover{
       background-color: #229a54;
       transform: translateY(-4px);
     }
@@ -75,5 +75,32 @@
       <div id="stats-display">Dummy stats</div>
       <button id="reset-button">Set Ulang Statistik</button>
   </div>
+  <script>
+    const spinButton = document.getElementById('spin-button')
+    const resultMessage = document.getElementById('result-message')
+    const statsDisplay = document.getElementById('stats-display')
+    const resetButton = document.getElementById('reset-button')
+
+    const fetchGameState = async () => {
+      gs = 4711;
+      updateFE(gs);
+    };
+    const updateFE = (gs)=>{
+      resultMessage.textContent = `Result: ${gs}`;
+      statsDisplay.textContent = `Wins: ${gs} | Losses: ${gs}`;
+    }
+    const spinWheel = async () => {
+      gs = 4712
+      gs = gs + 1
+      updateFE(gs)
+    }
+    const resetStats = async () => {
+      gs = 0
+      updateFE(gs)
+    }
+    spinButton.addEventListener('click',spinWheel)
+    resetButton.addEventListener('click',resetStats)
+    fetchGameState();
+  </script>
 </body>
 </html>
