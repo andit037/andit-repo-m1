@@ -80,23 +80,52 @@
     const resultMessage = document.getElementById('result-message')
     const statsDisplay = document.getElementById('stats-display')
     const resetButton = document.getElementById('reset-button')
+    const API_URL = 'http://localhost:3000/api/wheel'
 
     const fetchGameState = async () => {
-      gs = 4711;
-      updateFE(gs);
+      try {
+        const resp = await fetch(API_URL)
+        const data = await resp.json();
+        updateFE(gs);
+      } catch (error) {
+        const errMessage = 'Could not fetch gs from BE'
+        resultMessage.textContent = errMessage
+        statsDisplay.textContent = errMessage
+      }
     };
+
+    /**
+     * Update FE based on game state returned from BE
+     * @param {GameState: { wins:number; losses:number; lastResult:string; }}
+     * */
     const updateFE = (gs)=>{
-      resultMessage.textContent = `Result: ${gs}`;
-      statsDisplay.textContent = `Wins: ${gs} | Losses: ${gs}`;
+      if (gs.lastResult==='Blank'){
+        resultMessage.textContent = `Kurang beruntung, coba lagi!`;
+      }else{
+         resultMessage.textContent = `Bagus! kamu menang: ${gs.lastResult}`;
+      }
+      statsDisplay.textContent = `Menang: ${gs.wins} | Kalah: ${gs.losses}`;
     }
     const spinWheel = async () => {
-      gs = 4712
-      gs = gs + 1
-      updateFE(gs)
+     try {
+        const resp = await fetch(`${API_URL}/spin`)
+        const data = await resp.json();
+        updateFE(gs);
+      } catch (error) {
+        const errMessage = 'Could not spin from BE'
+        resultMessage.textContent = errMessage
+      }
     }
     const resetStats = async () => {
-      gs = 0
-      updateFE(gs)
+      try {
+        statsDisplay.textContent = ''
+        const resp = await fetch(`${API_URL}/reset`)
+        const data = await resp.json();
+        updateFE(gs);
+      } catch (error) {
+        const errMessage = 'Could not reset from BE'
+        statsDisplay.textContent = errMessage
+      }
     }
     spinButton.addEventListener('click',spinWheel)
     resetButton.addEventListener('click',resetStats)
