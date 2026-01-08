@@ -43,13 +43,13 @@ const saveGameState = (gs) =>{
   }
 }
 
-app.get('/api/wheel', (req, res) => {
+app.get('/api', (req, res) => {
   console.log(`BE REST Endpoint [/wheel] called by client with IP [${req.ip}]\n`)
   const gs = readGameState()
   res.json(gs)
 })
 
-app.post('/api/wheel/spin', (req, res) => {
+app.post('/api/spin', (req, res) => {
   console.log(`BE REST Endpoint [/spin] called by client with IP [${req.ip}]\n`)
   //get current gs
   const gs = readGameState()
@@ -68,7 +68,7 @@ app.post('/api/wheel/spin', (req, res) => {
   res.json(gs)
 })
 
-app.post('/api/wheel/reset', (req, res) => {
+app.post('/api/reset', (req, res) => {
   console.log(`BE REST Endpoint [/reset] called by client with IP [${req.id}]\n`)
   //reset gs
   const newEmptyGs = { ...initialGameState}
