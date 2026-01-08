@@ -84,8 +84,9 @@
 
     const fetchGameState = async () => {
       try {
+        console.log('User loading gamestate')
         const resp = await fetch(API_URL)
-        const data = await resp.json();
+        const gs = await resp.json();
         updateFE(gs);
       } catch (error) {
         const errMessage = 'Could not fetch gs from BE'
@@ -101,6 +102,9 @@
     const updateFE = (gs)=>{
       if (gs.lastResult==='Blank'){
         resultMessage.textContent = `Kurang beruntung, coba lagi!`;
+      }
+      else if(gs.lastResult==null){
+        resultMessage.textContent = `Coba Pertama x!`;
       }else{
          resultMessage.textContent = `Bagus! kamu menang: ${gs.lastResult}`;
       }
@@ -108,8 +112,9 @@
     }
     const spinWheel = async () => {
      try {
-        const resp = await fetch(`${API_URL}/spin`)
-        const data = await resp.json();
+        console.log('User spinning the wheel')
+        const resp = await fetch(`${API_URL}/spin`, {method: 'POST'})
+        const gs = await resp.json();
         updateFE(gs);
       } catch (error) {
         const errMessage = 'Could not spin from BE'
@@ -118,9 +123,10 @@
     }
     const resetStats = async () => {
       try {
+        console.log('User reset the gamestate')
         statsDisplay.textContent = ''
-        const resp = await fetch(`${API_URL}/reset`)
-        const data = await resp.json();
+        const resp = await fetch(`${API_URL}/reset`, {method: 'POST'})
+        const gs = await resp.json();
         updateFE(gs);
       } catch (error) {
         const errMessage = 'Could not reset from BE'
