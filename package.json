@@ -23,6 +23,8 @@
   "homepage": "https://github.com/andit037/andit-repo-m1#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.2.1"
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mariadb": "^3.4.5"
   }
 }

@@ -1,2 +1,9 @@
 node_modules/
+
 lucky_wheel_state.json
+
+*.log
+
+*.env
+
+*.tmp

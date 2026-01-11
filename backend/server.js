@@ -2,57 +2,23 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const port = 3000
-const path = require('path')
-const fs = require('fs')
 
 app.use(cors())
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const repo = require('./repository')
 
-const initialGameState = {
-  wins: 0,
-  losses: 0,
-  lastResult: null
-}
-
-const GS_FILE = path.join(__dirname, 'lucky_wheel_state.json')
-
-const readGameState = () => {
-  try {
-    if(!fs.existsSync(GS_FILE)){
-      saveGameState(initialGameState)
-    }
-  
-    const data = fs.readFileSync(GS_FILE, 'utf-8');
-    const gsJson = JSON.parse(data)
-    return gsJson;
-  } catch (error) {
-    console.error(`Reading readGameState failed`, error)
-  }
-}
-
-const saveGameState = (gs) =>{
-  try {
-    fs.writeFileSync(GS_FILE, JSON.stringify(gs, null, 2), 'utf-8')
-  } catch (error) {
-    console.error('Reading saveGameState failed', error)
-  }
-}
-
-app.get('/api', (req, res) => {
-  console.log(`BE REST Endpoint [/wheel] called by client with IP [${req.ip}]\n`)
-  const gs = readGameState()
+app.get('/api', async(req, res) => {
+  console.log(`BE REST Endpoint [/] called by client with IP [${req.ip}]\n`)
+  const gs = await repo.readGameState()
   res.json(gs)
 })
 
-app.post('/api/spin', (req, res) => {
+app.post('/api/spin', async(req, res) => {
   console.log(`BE REST Endpoint [/spin] called by client with IP [${req.ip}]\n`)
   //get current gs
-  const gs = readGameState()
+  const gs = await repo.readGameState()
   //spin (choose from wheelSegment array with 3 values, based on prob.) and save result
   const spinResult = spin()
   //update gs based on spin result
@@ -63,17 +29,15 @@ app.post('/api/spin', (req, res) => {
   }
   gs.lastResult = spinResult
   //save updated gs
-  saveGameState(gs)
+  repo.saveGameState(gs)
   //return updated gs
   res.json(gs)
 })
 
-app.post('/api/reset', (req, res) => {
-  console.log(`BE REST Endpoint [/reset] called by client with IP [${req.id}]\n`)
+app.post('/api/reset', async (req, res) => {
+  console.log(`BE REST Endpoint [/reset] called by client with IP [${req.ip}]\n`)
   //reset gs
-  const newEmptyGs = { ...initialGameState}
-  //save gs
-  saveGameState(newEmptyGs)
+  const newEmptyGs = await repo.resetGameState()
   //return empty gs
   res.json(newEmptyGs)  
 })
@@ -95,11 +59,11 @@ const spin = () =>{
       }
     }
   } catch (error) {
-    console.error('Reading spin failed', error)
+    console.error('spinning wheel failed', error)
   }
 }
 
 app.listen(port, () => {
   console.log(`WoF backend running on ${port}`)
-  readGameState()
+  repo.readGameState()
 })
